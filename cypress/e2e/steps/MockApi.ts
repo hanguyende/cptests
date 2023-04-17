@@ -1,58 +1,30 @@
-import { CartPayload, OrderPayload } from "./MockData";
+import { loginPayLoad, CartPayload, OrderPayload } from "./MockData";
 
 export class MockApi
 { 
-    createOrder(orderPayLoad: LoginPayload)
-    {
-        const token =  this.getToken();
-        let orderRespone;
-        cy
-            .request('POST', 'https://rahulshettyacademy.com/api/ecom/auth/login', { 
-                data:orderPayLoad,
-                headers:
-                {
-                    'Authorization' : token,
-                    'Content-Type' :'application/json'
-                }
-            })
-            .then( ({ body }) => {
-                orderRespone = body
-            })
-        const orderJsonResponse = orderRespone.json();
-        console.log(orderJsonResponse);
-        const orderId = orderJsonResponse.orders[0];
-        return orderId;
-    }
-
-    getOrderResponse(orderPayLoad: LoginPayload)
-    {
-        const token = this.getToken();
-        let orderRespone; 
-        cy
-            .request('POST', 'https://rahulshettyacademy.com/api/ecom/order/create-order', { 
-                data:orderPayLoad,
-                headers:
-                {
-                    'Authorization' : token,
-                    'Content-Type' :'application/json'
-                }
-            })
-            .then( ({ body }) => {
-                orderRespone = body
-            })
-
-        const orderJsonResponse = orderRespone.json();
-        console.log(orderJsonResponse);
-
-        return orderJsonResponse;
+    setSession () {
+        const payLoad = loginPayLoad;
+        cy.log('-------' + payLoad.userEmail + '---------' + payLoad.userPassword+ '---------');
+        cy.request(
+        {
+            method: 'POST',
+             url:'https://rahulshettyacademy.com/api/ecom/auth/login', 
+             headers: {
+                'accept': 'application/json',
+                'Content-Type': 'application/json',
+             },
+            body: payLoad
+        }).then(response => {
+            expect(response.body).to.have.property('token');
+            const token = response.body.token;
+            window.localStorage.setItem('token', response.body.token)
+        });
     }
 
     mockOrderList(fakePayload: OrderPayload) {
         cy.intercept('GET', 'https://rahulshettyacademy.com/api/ecom/order/get-orders-for-customer/**', {
             statusCode: 201,
-            body: {
-                body: JSON.stringify(fakePayload)
-            },
+            body: JSON.stringify(fakePayload),
         })
     }
 

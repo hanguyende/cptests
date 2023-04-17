@@ -6,15 +6,19 @@ export default class DashboardPage {
     private orders = 'button[routerlink*="myorders"]';
 
     load(): void {
-        cy.visit(this.url);
-        cy.get('body').should('be.visible');
+        cy.get(this.products).should('have.length.greaterThan', 3);
     }
 
     addProduct(productName: string) {
-        cy.get( this.productsText).filter(':contains("' + productName + '")');
-        cy.xpath("//div[@aria-label='Product Added To Cart']").should('be.visible');
-    }
 
+        cy.get('h5')
+            .filter(':contains("' + productName + '")')
+            .parent('div')
+            .within(() => {
+                cy.get('.fa-shopping-cart').parent('button').click();
+             })
+    }
+    
     navigateToOrders() {
         cy.get(this.orders).click();
     }

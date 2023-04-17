@@ -1,14 +1,14 @@
-export class CartPage {
+export default class CartPage {
    
     private url = "https://rahulshettyacademy.com/client/dashboard/cart";
     private cart = "[routerlink*='cart']";
-    private checkout = "text=Checkout";
+    private checkout = 'button[text="Checkout"]';
     private xPathDeletBtn = "//button[@class='btn btn-danger']";
 
     load(): void {
-        cy.visit(this.url);
         cy.get('body').should('be.visible');
     }
+
     clickOnCartIcon() {
         cy.get(this.cart).should('be.visible').click();
     }
@@ -18,10 +18,11 @@ export class CartPage {
     }
 
     checkoutProduct() {
-        cy.get(this.checkout).should('be.visible').click();
+        cy.get('div[role="alert"]').should('not.exist');
+        cy.get('button:contains("Checkout")').click();
     }
 
     verifyProductName(productName: string) {
-        cy.get('//').filter('//h3[text()=' + productName + "']").eq(1);
+        cy.get('h3').filter(':contains("' + productName + '")').should('be.visible');
     }
 }

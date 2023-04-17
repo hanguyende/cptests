@@ -32,6 +32,8 @@ export interface products {
 }
 
 export const loginPayLoad = {userEmail:"anshika@gmail.com", userPassword:"Iamking@000"};
+export const loginPayLoad2 = {userEmail:"rahulshetty@gmail.com", userPassword:"Iamking@000"};
+
 export const cartPayload = { products:[
             {
               _id: "6262e95ae26b7e1a10e89bf0",

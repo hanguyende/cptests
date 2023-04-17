@@ -1,6 +1,7 @@
 import { Given, When, Then } from '@badeball/cypress-cucumber-preprocessor'
 
 import LoginPage from './src/pages/LoginPage'
+import { MockApi } from './MockApi'
 
 Given('I go to the Login page', function () {
   this.browser = new LoginPage()
@@ -16,8 +17,10 @@ Given("I log in with user {string} and password {string}", function (user: strin
   //login with token session
 Given("I login with my token session", function () {
   // Use the page instance from the World instance to navigate
-  this.browser = new LoginPage();
+  this.browser = new MockApi();
   this.browser.setSession();
+
+  this.browser = new LoginPage()
   this.browser.load();
 });
 

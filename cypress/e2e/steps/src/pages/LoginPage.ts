@@ -1,5 +1,5 @@
 import DashboardPage from "./DashboardPage";
-import { loginPayLoad } from "../../MockData";
+import { loginPayLoad, loginPayLoad2 } from "../../MockData";
 
 export default class LoginPage {
     private url = 'https://rahulshettyacademy.com/client';
@@ -10,11 +10,11 @@ export default class LoginPage {
     private xPathLoginMsg = "//div[@aria-label='Login Successfully']";
     private xpathSignOutLink = '//button[normalize-space()="Sign Out"]';
     private signOutLink = '.fa.fa-sign-out';
+
     load(): void {
         cy.visit(this.url);
         cy.get('body').should('be.visible');
     }
-
 
     login(username: string, password: string) {
         cy.get(this.userName).should('be.visible').type(username);
@@ -38,27 +38,5 @@ export default class LoginPage {
         }else {
             cy.get(this.loginBtn).should('be.visible');
         }
-    }
-    setSession () {
-        let token;
-        cy.request('POST', 'https://rahulshettyacademy.com/api/ecom/auth/login', loginPayLoad)
-        .then(response => {
-            expect(response.body).to.have.property('token');
-            token = response.body.token;
-            window.localStorage.setItem('token', token)
-        });
-    }
-
-    getToken(){  
-        let token;
-        cy.request('POST', 'https://rahulshettyacademy.com/api/ecom/auth/login', loginPayLoad)
-        .then(response => {
-            expect(response.body).to.have.property('token');
-            token = response.body.token;
-            cy.wrap(token).as('wrapToken');
-            cy.log("response  " + this.wrapToken);
-        });
-        return this.token;    
-
     }
 }
