@@ -6,7 +6,8 @@
     "moduleResolution": "node",
     "allowSyntheticDefaultImports": true,
     "esModuleInterop": true,
-    "skipLibCheck": true
+    "skipLibCheck": true,
+    "strictNullChecks": true
   },
-  "include": ["**/*.ts"]
+  "include": ["**/*.ts", "cypress/support/e2e", "cypress/support/commands"]
 }
