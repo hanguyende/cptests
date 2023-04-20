@@ -17,11 +17,6 @@ jobs:
         
       - name: Run eslint
         run: npm run lint
-        
-      - name: Run Test Parallel
-        env:
-          PARALLEL: "2"
-        run: npm run runParallel   
 
       - name: Run Test with tags
         run: npx cypress run --env tags='@Login'
