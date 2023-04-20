@@ -1,0 +1,57 @@
+name: cptests
+
+on:
+  push:
+    branches: ["main"]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Setup cptests
+        uses: actions/checkout@v3
+
+      - name: Set
+        run: npm update --registry=https://registry.npmjs.org/
+        
+      - name: Run eslint
+        run: npm run lint
+        
+      - name: Run Test Parallel
+        env:
+          PARALLEL: "2"
+        run: npm run runParallel   
+
+      - name: Run Test with tags
+        env:
+          TAGS: "@Login"
+        run: npm run runWithTags
+        
+      - name: Upload test coverage as artifact for TAGS
+        uses: actions/upload-artifact@v3
+        with:
+          name: cucumber-html-report-tags
+          path: report
+
+      - name: Run tests chromium
+        env:
+          BROWSER: chromium
+        run: npm test
+      
+      - name: Upload test coverage as artifact for chromium
+        uses: actions/upload-artifact@v3
+        with:
+          name: cucumber-html-report-chromium
+          path: report
+          
+      - name: Run tests firefox
+        env:
+          BROWSER: firefox
+        run: npm test
+      
+      - name: Upload test coverage as artifact for firefox
+        uses: actions/upload-artifact@v3
+        with:
+          name: cucumber-report.html
+          path: ./ 
