@@ -24,31 +24,29 @@ jobs:
         run: npm run runParallel   
 
       - name: Run Test with tags
-        env:
-          TAGS: "@Login"
-        run: npm run runWithTags
+        run: npx cypress run --env tags='@Login'
         
       - name: Upload test coverage as artifact for TAGS
         uses: actions/upload-artifact@v3
         with:
-          name: cucumber-html-report-tags
-          path: report
+          name: cucumber-report.html
+          path: ./
 
       - name: Run tests chromium
         env:
           BROWSER: chromium
-        run: npm test
+        run: npx cypress run --browser chrome
       
       - name: Upload test coverage as artifact for chromium
         uses: actions/upload-artifact@v3
         with:
-          name: cucumber-html-report-chromium
-          path: report
+          name: cucumber-report.html
+          path: ./
           
       - name: Run tests firefox
         env:
           BROWSER: firefox
-        run: npm test
+        run: npx cypress run --browser firefox
       
       - name: Upload test coverage as artifact for firefox
         uses: actions/upload-artifact@v3
